@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="refresh" content="3600">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+	html {
+		font-size: 11px;
+	}
+
+	.container {
+		width: 100%;
+	}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<h1 class="text-center">Наше меню</h1>
+		<div class="row">
+			<div class="col-md-6">
+				<ul class="list-group" id="listleft">
+					###REPLACEME1###
+				</ul>
+			</div>
+			<div class="col-md-6">
+				<ul class="list-group" id="listright">
+					###REPLACEME2###
+				</ul>
+			</div>
+		</div>
+	</div>
+<script>
+var menuDataHash = '###REPLACEMEHASH###';
+$(document).ready(function() {
+	setInterval(function() {
+		$.ajax({
+			url: '/menu.json',
+			dataType: 'json',
+			async: false,
+			cache: false,
+			success: function(data) {
+				if(window.menuDataHash == data.menuDataHash) {
+					return;
+				}
+				window.menuDataHash = data.menuDataHash;
+				$("ul").empty();
+				$.each(data.itemsleft, function(i, item) {
+					$('#listleft').append(item);
+				});
+				$.each(data.itemsright, function(i, item) {
+					$('#listright').append(item);
+				});
+			}
+		});
+	}, 30000);
+});
+</script>
+</body>
+</html>
